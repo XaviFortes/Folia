@@ -1,4 +1,4 @@
-name: Patch and Build
+name: Patch, Build, and Release
 
 on:
   push:
@@ -28,3 +28,9 @@ jobs:
         run: ./gradlew applyPatches
       - name: Build
         run: ./gradlew build
+      - name: Create Release
+        uses: actions/checkout@v4
+        run: |
+          gh release create v${{ github.run_number }} -t "Release v${{ github.run_number }}" -n "Release created by GitHub Actions"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
